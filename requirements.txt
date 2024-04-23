@@ -1,0 +1,7 @@
+streamlit
+streamlit-authenticator
+watchdog
+
+sqlalchemy
+polars
+plotly
