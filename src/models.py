@@ -19,7 +19,8 @@ class Workout(Base):
     category: int = Column(Integer, ForeignKey("category.id"), nullable=False)
     session: int = Column(Integer, nullable=False, default=1)  # what session of the day is the workout
     is_calisthenics = Column(Boolean, nullable=False, default=False)
-    person: str = Column(String, nullable=False, default="Martin") 
+    person: str = Column(String, nullable=False, default="Martin")
+    is_running: bool = Column(Boolean, nullable=False, default=False)
 
 
 class MappingWorkoutExercise(Base):

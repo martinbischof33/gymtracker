@@ -26,17 +26,25 @@ class DatabaseHandler:
         
         today = date.today()
         workout_count:int = self.session.query(func.count(Workout.id)).filter(Workout.date == today).scalar()
-        
-        
+
         workout: Workout = Workout(
             date=today,
             category= category,
             session = workout_count + 1,
             is_calisthenics = is_calisthenics,    
+            is_running=True
         )
         self.session.add(workout)
         self.session.commit()
-        
+       
+    def is_running(self) -> bool:
+        return self.session.query(func.count(Workout.id)).filter(Workout.is_running == True).scalar() > 0
+    
+    def finish_current_workout(self) -> None:
+        running_workout = self.session.query(Workout).filter(Workout.is_running == True).first()
+        if running_workout:
+            running_workout.is_running = False
+            self.session.commit()
     
 
 def get_db() -> None:
@@ -48,5 +56,4 @@ def get_db() -> None:
 
 
 
-    
     

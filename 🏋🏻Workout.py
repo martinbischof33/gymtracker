@@ -1,35 +1,47 @@
 import streamlit as st
 
-from src import setup,DatabaseHandler
+from src import setup, DatabaseHandler
 
+# Setup the application
 setup()
 
-db : DatabaseHandler = st.session_state.db
+# Create an instance of DatabaseHandler
+db: DatabaseHandler = st.session_state.db
 
-st.title("🏋🏻 Track Workout")
+# Display the title of the application
+st.title("🏋🏻 Start Workout")
 
-
-with st.expander(
-    "Create "
-):
+if db.is_running():
+    st.warning("There is already a Workout!",icon="💪🏻")
+    switch = st.button("Switch to Workout Tracking", type="secondary")
+    if switch:
+        st.switch_page("pages/3_📝Track_Current_Workout.py")
+    
+else:
+    # Create a form for adding a workout
     with st.form(
         key="workout_form",
         clear_on_submit=True,
-        border=True
+        border=False
     ):
-        st.selectbox(
+        # Select the exercise type
+        exercise_type = st.selectbox(
             label="Exercise Type",
-            options=["Pull","Push","Leg", "Cardio"],
+            options=["Pull", "Push", "Leg", "Cardio"],
             index=0,
             key="exercise_type"
-            ) 
-        st.toggle(
+        )
+        # Toggle whether the workout is calesthenics or not
+        is_calisthenics = st.toggle(
             label="Is the workout calesthenics?",
             value=False,
             key="is_calisthenics"
-            )
-
-        if st.form_submit_button(label="Confirm"):
-            db.add_workout(category=st.session_state.exercise_type,is_calisthenics=st.session_state.is_calisthenics) 
+        )
+        # Submit the form to add the workout
+        if st.form_submit_button(label="Confirm", type="primary"):
+            # Add the workout to the database
+            db.add_workout(category=exercise_type, is_calisthenics=is_calisthenics)
+            # Display a success message
             st.success("Workout created")
-        
+            # Rerun the application
+            st.rerun()
