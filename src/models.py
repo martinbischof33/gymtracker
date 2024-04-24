@@ -9,6 +9,7 @@ class Exercise(Base):
     name: str = Column(String, nullable=False)
     category: int = Column(Integer, ForeignKey("category.id"), nullable=False)
     base_weight: float = Column(Float, nullable=False, default=0)
+    is_timed: bool = Column(Boolean, nullable=False, default=False)
 
 
 class Workout(Base):
@@ -17,6 +18,8 @@ class Workout(Base):
     date: Date = Column(Date, default=func.current_date(), nullable=False)
     category: int = Column(Integer, ForeignKey("category.id"), nullable=False)
     session: int = Column(Integer, nullable=False, default=1)  # what session of the day is the workout
+    is_calisthenics = Column(Boolean, nullable=False, default=False)
+    person: str = Column(String, nullable=False, default="Martin") 
 
 
 class MappingWorkoutExercise(Base):
@@ -27,7 +30,7 @@ class MappingWorkoutExercise(Base):
     set: int = Column(Integer, nullable=False, default=3)
     repetition: int = Column(Integer, nullable=True)
     weight: float = Column(Float, nullable=True)
-    side: bool = Column(Boolean, nullable=False, default=False)  # if weight is separated on both sides.
+    is_weight_seperated: bool = Column(Boolean, nullable=False, default=False)  # if weight is separated on both sides.
     duration: Time = Column(Time, nullable=True)
 
 
@@ -37,8 +40,8 @@ class Category(Base):
     name: str = Column(String, nullable=False)
 
 
-class BodyMessurement(Base):
-    __tablename__ = "body_messurement"
+class BodyMeasurement(Base):
+    __tablename__ = "body_measurement"
     id: int = Column(Integer, primary_key=True, autoincrement=True)
     date: Date = Column(Date, default=func.current_date(), nullable=False)
     weight: float = Column(Float,nullable=False)
