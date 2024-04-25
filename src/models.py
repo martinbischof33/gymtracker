@@ -7,16 +7,17 @@ class Exercise(Base):
     __tablename__ = "exercise"
     id: int = Column(Integer, primary_key=True, autoincrement=True)
     name: str = Column(String, nullable=False)
-    category: int = Column(Integer, ForeignKey("category.id"), nullable=False)
+    category_id: int = Column(Integer, ForeignKey("category.id"), nullable=False)
     base_weight: float = Column(Float, nullable=False, default=0)
     is_timed: bool = Column(Boolean, nullable=False, default=False)
+    target_muscle_group = Column(String, nullable=False)
 
 
 class Workout(Base):
     __tablename__ = "workout"  # list of excersises on one day (1:n) 
     id: int = Column(Integer, primary_key=True, autoincrement=True)
     date: Date = Column(Date, default=func.current_date(), nullable=False)
-    category: int = Column(Integer, ForeignKey("category.id"), nullable=False)
+    category_id: int = Column(Integer, ForeignKey("category.id"), nullable=False)
     session: int = Column(Integer, nullable=False, default=1)  # what session of the day is the workout
     is_calisthenics = Column(Boolean, nullable=False, default=False)
     person: str = Column(String, nullable=False, default="Martin")

@@ -10,6 +10,6 @@ def setup():
         initial_sidebar_state="auto"
     )
     # login form
-    authenticate()
+    # authenticate()
     # save db conection to st.sessionstate 
     get_db()
